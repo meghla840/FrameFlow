@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FrameFlow — Video Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap">
 <meta name="theme-color" content="#111114">
 <style>
 :root{--bg:#101014;--panel:#19191f;--panel2:#202027;--line:#303039;--text:#f4f4f6;--muted:#a3a3af;--accent:#ff4e70;--accent2:#ff7b59;--good:#69dbad}
@@ -59,12 +60,44 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 .logo{width:44px;height:44px;border-radius:14px}.logo svg{width:28px}
 .pill.credit{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:7px 14px;color:#fff;background:linear-gradient(120deg,#ff4e7033,#7a5cff33);border:1px solid #ff7b9a88;box-shadow:0 0 22px #ff4e7035}.pill.credit b{background:linear-gradient(90deg,#ff8aa3,#ffb37a);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900;letter-spacing:.4px}
 .footer-credit{text-align:center;margin-top:22px;padding:14px;font-size:13px;color:#a3a3af;letter-spacing:.4px}.footer-credit b{font-size:15px;font-weight:900;background:linear-gradient(90deg,#ff4e70,#ff9b5b);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ===== v2: brand, layout, panels ===== */
+.brand{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--text);gap:12px;letter-spacing:0}
+.logo{width:58px;height:48px;border-radius:15px;background:linear-gradient(145deg,#ff4e70,#ff9b5b 60%,#ffb37a);box-shadow:0 6px 22px #ff4e7040,inset 0 1px 0 #ffffff66,inset 0 0 0 1px #ffffff1f}.logo svg{width:50px}
+.wordmark{display:flex;flex-direction:column;line-height:1.05}.wm{font-size:21px;letter-spacing:-.4px}.wm i{font-style:normal;font-weight:300;color:#ececf3}.wm b{font-weight:850;background:linear-gradient(90deg,#ff6b87,#ffa66b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{-webkit-text-fill-color:initial;display:block;margin-top:4px;font-size:9px;font-weight:500;letter-spacing:2.6px;text-transform:uppercase;color:#ffffff3d}
+.footer-credit{margin-top:18px;padding:10px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#ffffff33}.footer-credit b{font-size:11px;font-weight:600;background:none;-webkit-text-fill-color:initial;color:#ffffff4d}
+.tool-nav{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid #ffffff10;background:#ffffff04;overflow-x:auto;flex-shrink:0}.tool-nav button{flex:1;min-width:0;padding:7px 4px;font-size:11px;border-radius:99px;background:transparent;border-color:transparent;color:var(--muted);white-space:nowrap}.tool-nav button:hover{transform:none;background:#ffffff0d}.tool-nav button.on{background:#ff4e7022;border-color:#ff4e7066;color:#ffd0da}
+.panel-foot{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;border-top:1px solid #ffffff10;background:#14141bf2;flex-shrink:0}.panel-foot button{font-size:11px;padding:9px 6px}
+.timeline-track{cursor:pointer}
+#bgVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(26px) brightness(.55);transform:scale(1.25);pointer-events:none}
+.preview-frame #previewVideo{position:relative;z-index:1}
+.sub-label{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:16px 0 2px}.sub-label:first-of-type{margin-top:6px}
+@media(min-width:1101px){
+ .workspace{align-items:start;grid-template-columns:250px minmax(420px,1fr) 320px}
+ .left-panel,.center,.right-panel{position:sticky;top:84px}
+ .left-panel{max-height:calc(100vh - 104px);overflow-y:auto}
+ .center{--ph:max(240px,calc(100vh - 430px));min-height:0}
+ .preview-stage{flex:none;height:calc(var(--ph) + 40px);min-height:0}
+ .preview-frame{width:min(100%,calc(var(--ph)*1.7778));max-height:none}
+ .preview-frame.vertical{width:auto;height:var(--ph)}
+ .preview-frame.square{width:min(100%,var(--ph))}
+ .right-panel{display:flex;flex-direction:column;max-height:calc(100vh - 104px)}
+ .right-panel .panel-body{overflow-y:auto;flex:1;position:relative;padding:14px;scroll-behavior:smooth}
+ .right-panel .control-group,.right-panel .control-group:last-child{background:#ffffff06;border:1px solid #ffffff0f;border-radius:14px;padding:14px;margin:0 0 12px}
+ .right-panel .control-group:last-child{margin-bottom:0}
+ .right-panel .section-title{font-size:12px;margin-bottom:6px;padding-bottom:10px;border-bottom:1px solid #ffffff0d}
+ .right-panel .field{margin:13px 0}
+}
+@media(max-width:1100px){.tool-nav{display:none}.panel-foot{border-top:0}}
+.logo{width:64px;height:52px;border-radius:16px;background:radial-gradient(circle at 30% 0,#3a2233 0,transparent 70%),linear-gradient(160deg,#241a28,#121018);border:1px solid #ff7b9a55;box-shadow:0 8px 28px #ff4e7035,0 0 0 4px #ff4e700d,inset 0 1px 0 #ffffff22}.logo svg{width:56px;height:auto;filter:drop-shadow(0 0 6px #ff4e7066)}
+.logo{width:68px;height:60px;border-radius:18px}.logo svg{width:60px}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <div class="brand"><div class="logo"><svg viewBox="0 0 32 32" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11V6a2 2 0 0 1 2-2h5M21 4h5a2 2 0 0 1 2 2v5M28 21v5a2 2 0 0 1-2 2h-5M11 28H6a2 2 0 0 1-2-2v-5" stroke="#fff" stroke-width="2" opacity=".55"/><path d="M9.5 22.5V10l6.5 7.5L22.5 10v12.5" stroke="#fff" stroke-width="3.2"/></svg></div><div>FrameFlow</div></div>
+    <div class="brand"><div class="logo"><svg viewBox="0 0 64 56" fill="none" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a7a"/><stop offset="1" stop-color="#ffb070"/></linearGradient><linearGradient id="lgB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#ffd3dc"/></linearGradient></defs><g transform="translate(2 2)"><path d="M18 28C12 28 10 21 15 18.5C15.5 13 21 10.5 25 13.5C27 8 36 7.5 38.5 14C44 12.5 48.5 17.5 46 22C50 23.5 49.5 28 45 28Z" fill="url(#lgA)"/><path d="M18 28C12 28 10 21 15 18.5C15.5 13 21 10.5 25 13.5C27 8 36 7.5 38.5 14C44 12.5 48.5 17.5 46 22C50 23.5 49.5 28 45 28Z" stroke="#fff" stroke-opacity=".4" stroke-width="1"/><path d="M28.500 15.500V25L37 20.250Z" fill="#1d1220" stroke="#1d1220" stroke-width="1.800"/></g><path d="M14 36.500c3.500-2.500 6.500 2.500 10 0s6.500 2.500 10 0 6.500 2.500 10 0 4.500 1 6 0" stroke="url(#lgA)" stroke-opacity=".55" stroke-width="1.400"/><text x="32" y="51.500" text-anchor="middle" font-family="'Dancing Script','Segoe Script','Snell Roundhand','Brush Script MT',cursive" font-size="6" font-weight="700" fill="#fff" fill-opacity=".38" stroke="none">Megh</text></svg></div><div class="wordmark"><span class="wm"><i>Frame</i><b>Flow</b></span></div></div>
     <div class="top-actions"><button class="ghost" id="resetBtn">Reset</button><button class="primary" id="topExport">Export video ↗</button></div>
   </header>
   <main class="workspace">
@@ -99,7 +132,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
       <div class="preview-stage">
         <div class="preview-frame" id="previewFrame">
           <div class="preview-empty" id="previewEmpty"><div class="big">▷</div><strong>Make something worth watching.</strong><span>Import a video to start editing.</span></div>
-          <video id="previewVideo" class="hidden" playsinline controls></video>
+          <video id="bgVideo" class="hidden" muted playsinline></video><video id="previewVideo" class="hidden" playsinline></video>
           <div id="textPreview" class="text-preview pos-bottom hidden"></div>
           <div id="stickerPreview" class="sticker-preview hidden" style="right:8%;top:10%"></div>
         </div>
@@ -109,34 +142,35 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
     </section>
     <aside class="panel right-panel">
       <div class="panel-head"><h2>EDITING CONTROLS</h2><span class="eyebrow">PRO TOOLS</span></div>
-      <div class="panel-body">
-        <div class="control-group">
+      <nav class="tool-nav" id="toolNav"><button class="on" data-g="g-trim">Trim</button><button data-g="g-look">Look</button><button data-g="g-audio">Audio</button><button data-g="g-fx">Effects</button><button data-g="g-text">Text</button></nav>
+      <div class="panel-body" id="toolBody">
+        <div class="control-group" id="g-trim">
           <div class="section-title">✂ Trim video <span class="muted">01</span></div>
           <div class="field"><label>Start time <span class="value" id="startLabel">00:00.0</span></label><input type="range" id="trimStart" min="0" max="100" value="0" step=".1" disabled></div>
           <div class="field"><label>End time <span class="value" id="endLabel">00:00.0</span></label><input type="range" id="trimEnd" min="0" max="100" value="100" step=".1" disabled></div>
           <div class="two"><button class="small" id="setStartBtn" disabled>Set start here</button><button class="small" id="setEndBtn" disabled>Set end here</button></div>
           <div class="notice">Trim handles set the portion used in the exported video.</div>
         </div>
-        <div class="control-group">
+        <div class="control-group" id="g-look">
           <div class="section-title">🎨 Look & format <span class="muted">02</span></div>
-          <div class="field"><label>Brightness <span class="value" id="brightnessVal">100%</span></label><input type="range" id="brightness" min="50" max="150" value="100"></div>
+          <div class="sub-label">Color</div><div class="field"><label>Brightness <span class="value" id="brightnessVal">100%</span></label><input type="range" id="brightness" min="50" max="150" value="100"></div>
           <div class="field"><label>Contrast <span class="value" id="contrastVal">100%</span></label><input type="range" id="contrast" min="50" max="150" value="100"></div>
           <div class="field"><label>Saturation <span class="value" id="saturationVal">100%</span></label><input type="range" id="saturation" min="0" max="200" value="100"></div>
-          <div class="field"><label>Playback speed</label><select id="speed"><option value="0.5">0.5× Slow motion</option><option value="0.75">0.75×</option><option value="1" selected>1× Normal</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2× Fast</option></select></div>
+          <div class="sub-label">Playback &amp; size</div><div class="field"><label>Playback speed</label><select id="speed"><option value="0.5">0.5× Slow motion</option><option value="0.75">0.75×</option><option value="1" selected>1× Normal</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2× Fast</option></select></div>
           <div class="field"><label>Rotate video</label><select id="rotate"><option value="0">No rotation</option><option value="90">Rotate 90°</option><option value="180">Rotate 180°</option><option value="270">Rotate 270°</option></select></div>
           <div class="field"><label>Export resolution</label><select id="resolution"><option value="original">Original size</option><option value="1080">1080p Full HD</option><option value="720">720p HD</option><option value="480">480p SD</option></select></div>
-          <div class="field"><label>Fit / background</label><select id="fit"><option value="blur">Blur background</option><option value="black">Black bars</option><option value="crop">Crop to fill</option></select></div>
-          <div class="two"><div class="field"><label>Fade in</label><select id="fadeIn"><option value="0">Off</option><option value="0.5">0.5s</option><option value="1">1s</option></select></div><div class="field"><label>Fade out</label><select id="fadeOut"><option value="0">Off</option><option value="0.5">0.5s</option><option value="1">1s</option></select></div></div>
+          <div class="sub-label">Frame</div><div class="field"><label>Fit / background</label><select id="fit"><option value="blur">Blur background</option><option value="black">Black bars</option><option value="crop">Crop to fill</option></select></div>
+          <div class="checkrow">Flip horizontally <input class="switch" id="flip" type="checkbox"></div>
+<div class="two"><div class="field"><label>Fade in</label><select id="fadeIn"><option value="0">Off</option><option value="0.5">0.5s</option><option value="1">1s</option></select></div><div class="field"><label>Fade out</label><select id="fadeOut"><option value="0">Off</option><option value="0.5">0.5s</option><option value="1">1s</option></select></div></div>
         </div>
-        <div class="control-group">
+        <div class="control-group" id="g-audio">
           <div class="section-title">🔊 Audio <span class="muted">03</span></div>
           <div class="field"><label>Volume <span class="value" id="volumeVal">100%</span></label><input type="range" id="volume" min="0" max="200" value="100"></div>
           <div class="checkrow">Mute original audio <input class="switch" id="mute" type="checkbox"></div>
-          <div class="checkrow">Flip horizontally <input class="switch" id="flip" type="checkbox"></div>
-          <div class="field"><label>Add music</label><input id="music" type="file" accept="audio/*"></div><div class="field"><label>Music volume <span class="value" id="musicVolVal">80%</span></label><input type="range" id="musicVol" min="0" max="100" value="80"></div>
-          <button class="ghost" id="snapBtn" style="width:100%;margin-bottom:8px">📸 Save current frame (PNG)</button><button class="ghost" id="resetEdits" style="width:100%">↺ Reset editing controls</button>
+                    <div class="sub-label">Music</div><div class="field"><label>Add music</label><input id="music" type="file" accept="audio/*"></div><div class="field"><label>Music volume <span class="value" id="musicVolVal">80%</span></label><input type="range" id="musicVol" min="0" max="100" value="80"></div>
+          
         </div>
-        <div class="control-group">
+        <div class="control-group" id="g-fx">
           <div class="section-title">✨ Effects & filters <span class="muted">04</span></div>
           <div class="effect-tabs" id="effectTabs"><button class="effect-tab active" data-cat="all">All</button><button class="effect-tab" data-cat="cinema">Cinema</button><button class="effect-tab" data-cat="vintage">Vintage</button><button class="effect-tab" data-cat="creative">Creative</button></div>
           <div class="effect-grid" id="effectGrid">
@@ -152,7 +186,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           </div>
           <div class="field"><label>Effect intensity <span class="value" id="effectIntensityVal">70%</span></label><input type="range" id="effectIntensity" min="0" max="100" value="70"></div>
         </div>
-        <div class="control-group">
+        <div class="control-group" id="g-text">
           <div class="section-title">Aa Text & stickers <span class="muted">05</span></div>
           <div class="field"><label>Overlay text</label><input id="overlayText" type="text" maxlength="100" placeholder="Write a caption…"></div>
           <div class="two"><div class="field"><label>Text size</label><select id="textSize"><option value="18">Small</option><option value="28" selected>Medium</option><option value="40">Large</option><option value="52">Extra large</option></select></div><div class="field"><label>Position</label><select id="textPosition"><option value="top">Top</option><option value="center">Center</option><option value="bottom" selected>Bottom</option></select></div></div>
@@ -161,6 +195,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           <div class="audio-note">Text and stickers are burned into exported video. Emoji appearance depends on available fonts.</div>
         </div>
       </div>
+      <div class="panel-foot"><button class="ghost" id="snapBtn">📸 Save frame</button><button class="ghost" id="resetEdits">↺ Reset all</button></div>
     </aside>
   </main>
   <section class="panel export-panel">
@@ -189,13 +224,13 @@ $('playBtn').onclick=()=>{if(video.paused){if(video.currentTime>=+$('trimEnd').v
 let activeEffect='none';
 function effectCSS(){const n=activeEffect,i=+$('effectIntensity').value/100,mix=(a,b)=>a+(b-a)*i;const c={none:{b:1,c:1,s:1,sep:0,h:0},warm:{b:mix(1,1.06),c:mix(1,1.08),s:mix(1,1.18),sep:mix(0,.18),h:mix(0,-7)},cinema:{b:mix(1,.94),c:mix(1,1.24),s:mix(1,.82),sep:mix(0,.12),h:mix(0,7)},mono:{b:mix(1,1.02),c:mix(1,1.12),s:mix(1,0),sep:0,h:0},retro:{b:mix(1,1.04),c:mix(1,.92),s:mix(1,.78),sep:mix(0,.28),h:mix(0,-12)},dream:{b:mix(1,1.09),c:mix(1,.91),s:mix(1,1.1),sep:mix(0,.12),h:mix(0,10)},fade:{b:mix(1,1.04),c:mix(1,.78),s:mix(1,.72),sep:mix(0,.2),h:mix(0,4)},vivid:{b:mix(1,1.03),c:mix(1,1.18),s:mix(1,1.55),sep:mix(0,.03),h:mix(0,-3)},noir:{b:mix(1,.88),c:mix(1,1.35),s:mix(1,.08),sep:0,h:0}};return c[n]||c.none;}
 function updateOverlays(){const txt=$('overlayText').value,t=$('textPreview');t.textContent=txt;t.className='text-preview pos-'+$('textPosition').value+(txt?'':' hidden');const fh=$('previewFrame').clientHeight||720;t.style.fontSize=(+$('textSize').value*fh/720)+'px';$('stickerPreview').style.fontSize=(52*fh/720)+'px';t.style.color=$('textColor').value;const sticker=$('sticker').value,st=$('stickerPreview');st.textContent=sticker;st.classList.toggle('hidden',!sticker);}
-function updatePreviewFilters(){const b=+$('brightness').value,c=+$('contrast').value,s=+$('saturation').value,rot=+$('rotate').value,flip=$('flip').checked,e=effectCSS();video.style.filter=`brightness(${(b/100*e.b).toFixed(3)}) contrast(${(c/100*e.c).toFixed(3)}) saturate(${(s/100*e.s).toFixed(3)}) sepia(${e.sep.toFixed(3)}) hue-rotate(${e.h.toFixed(1)}deg)`;video.playbackRate=+$('speed').value;video.volume=Math.min(1,+$('volume').value/100);video.muted=$('mute').checked;video.style.transform=`rotate(${rot}deg) scaleX(${flip?-1:1})`;let aspect=$('aspect').value;$('previewFrame').classList.toggle('vertical',aspect==='9:16');$('previewFrame').classList.toggle('square',aspect==='1:1');video.classList.toggle('fit-cover',aspect!=='original');updateOverlays();}
-['brightness','contrast','saturation','speed','rotate','volume','mute','flip','aspect'].forEach(id=>$(id).addEventListener('input',()=>{updatePreviewFilters();if(id==='brightness')$('brightnessVal').textContent=$('brightness').value+'%';if(id==='contrast')$('contrastVal').textContent=$('contrast').value+'%';if(id==='saturation')$('saturationVal').textContent=$('saturation').value+'%';if(id==='volume')$('volumeVal').textContent=$('volume').value+'%';}));
+function updatePreviewFilters(){const b=+$('brightness').value,c=+$('contrast').value,s=+$('saturation').value,rot=+$('rotate').value,flip=$('flip').checked,e=effectCSS();video.style.filter=`brightness(${(b/100*e.b).toFixed(3)}) contrast(${(c/100*e.c).toFixed(3)}) saturate(${(s/100*e.s).toFixed(3)}) sepia(${e.sep.toFixed(3)}) hue-rotate(${e.h.toFixed(1)}deg)`;video.playbackRate=+$('speed').value;video.volume=Math.min(1,+$('volume').value/100);video.muted=$('mute').checked;video.style.transform=`rotate(${rot}deg) scaleX(${flip?-1:1})`;let aspect=$('aspect').value;$('previewFrame').classList.toggle('vertical',aspect==='9:16');$('previewFrame').classList.toggle('square',aspect==='1:1');video.classList.toggle('fit-cover',$('fit').value==='crop');updateOverlays();syncBg();}
+['brightness','contrast','saturation','speed','rotate','volume','mute','flip','aspect','fit'].forEach(id=>$(id).addEventListener('input',()=>{updatePreviewFilters();if(id==='brightness')$('brightnessVal').textContent=$('brightness').value+'%';if(id==='contrast')$('contrastVal').textContent=$('contrast').value+'%';if(id==='saturation')$('saturationVal').textContent=$('saturation').value+'%';if(id==='volume')$('volumeVal').textContent=$('volume').value+'%';}));
 $('effectIntensity').addEventListener('input',()=>{$('effectIntensityVal').textContent=$('effectIntensity').value+'%';updatePreviewFilters();});
 $('effectGrid').querySelectorAll('[data-effect]').forEach(btn=>btn.addEventListener('click',()=>{activeEffect=btn.dataset.effect;$('effectGrid').querySelectorAll('.effect-card').forEach(b=>b.classList.toggle('active',b===btn));updatePreviewFilters();}));
 $('effectTabs').querySelectorAll('[data-cat]').forEach(btn=>btn.addEventListener('click',()=>{$('effectTabs').querySelectorAll('.effect-tab').forEach(b=>b.classList.toggle('active',b===btn));$('effectGrid').querySelectorAll('.effect-card').forEach(card=>card.classList.toggle('hidden',btn.dataset.cat!=='all'&&card.dataset.cat!==btn.dataset.cat&&card.dataset.effect!=='none'));}));
 ['overlayText','textSize','textPosition','textColor','sticker'].forEach(id=>$(id).addEventListener('input',updateOverlays));
-function resetEdits(){ $('brightness').value=100;$('contrast').value=100;$('saturation').value=100;$('speed').value=1;$('rotate').value=0;$('resolution').value='original';$('volume').value=100;$('mute').checked=false;$('flip').checked=false;$('aspect').value='16:9';$('brightnessVal').textContent='100%';$('contrastVal').textContent='100%';$('saturationVal').textContent='100%';$('volumeVal').textContent='100%';$('effectIntensity').value=70;$('effectIntensityVal').textContent='70%';activeEffect='none';$('effectGrid').querySelectorAll('.effect-card').forEach(b=>b.classList.toggle('active',b.dataset.effect==='none'));$('overlayText').value='';$('sticker').value='';updatePreviewFilters();} $('resetEdits').onclick=resetEdits;
+function resetEdits(){ $('brightness').value=100;$('contrast').value=100;$('saturation').value=100;$('speed').value=1;$('rotate').value=0;$('resolution').value='original';$('volume').value=100;$('mute').checked=false;$('flip').checked=false;$('aspect').value='16:9';$('brightnessVal').textContent='100%';$('contrastVal').textContent='100%';$('saturationVal').textContent='100%';$('volumeVal').textContent='100%';$('effectIntensity').value=70;$('effectIntensityVal').textContent='70%';activeEffect='none';$('effectGrid').querySelectorAll('.effect-card').forEach(b=>b.classList.toggle('active',b.dataset.effect==='none'));$('overlayText').value='';$('sticker').value='';$('fit').value='blur';$('fadeIn').value=0;$('fadeOut').value=0;$('textSize').value=28;$('textPosition').value='bottom';$('textColor').value='#ffffff';$('music').value='';$('musicVol').value=80;$('musicVolVal').textContent='80%';$('effectTabs').querySelector('[data-cat=all]').click();updatePreviewFilters();} $('resetEdits').onclick=resetEdits;
 $('resetBtn').onclick=()=>{if(busy)return;resetEdits();if(duration){$('trimStart').value=0;$('trimEnd').value=duration;updateTrimLabels();video.currentTime=0;}};
 function escDrawtext(s){return s.replace(/\\/g,'\\\\').replace(/:/g,'\\:').replace(/'/g,"\\'").replace(/%/g,'\\%').replace(/\[/g,'\\[').replace(/\]/g,'\\]');}
 let AC,vgain,mdest,outBlob=null,outName='';
@@ -237,6 +272,15 @@ $('resetEdits').addEventListener('click',()=>{$('fit').value='blur';$('fadeIn').
 $('fileInput').addEventListener('change',()=>$('result').classList.add('hidden'));
 $('previewFrame').append($('textPreview'),$('stickerPreview'));addEventListener('resize',updateOverlays);
 addEventListener('keydown',e=>{if(!file||/INPUT|SELECT|TEXTAREA|BUTTON/.test(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();$('playBtn').click()}else if(e.code==='ArrowLeft')video.currentTime=Math.max(0,video.currentTime-1);else if(e.code==='ArrowRight')video.currentTime=Math.min(duration,video.currentTime+1)});
+
+const bg=$('bgVideo');
+function syncBg(){const show=!video.classList.contains('hidden')&&$('fit').value==='blur'&&!!video.getAttribute('src');bg.classList.toggle('hidden',!show);if(!show){bg.pause();if(!video.getAttribute('src'))bg.removeAttribute('src');return}if(bg.getAttribute('src')!==video.getAttribute('src'))bg.src=video.getAttribute('src');if(Math.abs(bg.currentTime-video.currentTime)>.3)bg.currentTime=video.currentTime;bg.playbackRate=video.playbackRate;video.paused?bg.pause():bg.play().catch(()=>{})}
+['play','pause','seeked','loadeddata','ratechange'].forEach(ev=>video.addEventListener(ev,syncBg));
+$('removeBtn').addEventListener('click',()=>{$('fileInput').value='';$('result').classList.add('hidden');syncBg()});
+$('timelineTrack').addEventListener('click',e=>{if(!duration)return;const r=e.currentTarget.getBoundingClientRect();video.currentTime=Math.max(0,Math.min(duration,(e.clientX-r.left)/r.width*duration))});
+const tb=$('toolBody'),navBtns=[...$('toolNav').querySelectorAll('button')];
+navBtns.forEach(b=>b.onclick=()=>{const g=$(b.dataset.g);tb.scrollTo({top:g.offsetTop-14,behavior:'smooth'})});
+tb.addEventListener('scroll',()=>{let cur=navBtns[0];navBtns.forEach(b=>{if($(b.dataset.g).offsetTop-tb.scrollTop<=60)cur=b});if(tb.scrollTop+tb.clientHeight>=tb.scrollHeight-4)cur=navBtns[navBtns.length-1];navBtns.forEach(b=>b.classList.toggle('on',b===cur))});
 setLoaded(false);updatePreviewFilters();
 </script>
 </body>
