@@ -100,7 +100,12 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 .stk-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin:8px 0 4px}.stk-grid button{padding:0;aspect-ratio:1;font-size:19px;line-height:1;border-radius:10px;background:#ffffff08}.stk-grid button.on{background:#ff4e7026;border-color:#ff4e70;box-shadow:0 0 0 2px #ff4e7033}
 .sub-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}.sub-row button{font-size:12px;padding:9px 4px}
 .stk-grid button img{width:100%;height:100%;object-fit:contain;border-radius:8px;display:block}
+.wchips .wchip{border-radius:10px;padding:6px 11px;font-size:14px;font-weight:700;background:#ffffff0d;border:1.5px solid #ffffff1f;color:#fff}.wchips .wchip.sel{border-color:#ff4e70;box-shadow:0 0 0 3px #ff4e7030}
+.palette{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;align-items:center}.palette button{width:28px;height:28px;padding:0;border-radius:50%;border:2px solid #ffffff33;min-width:0}.palette button:hover{transform:scale(1.12)}.palette input[type=color]{width:34px;height:28px;padding:0;border:0;background:none}
+.preview-frame.dragging,.preview-frame.dragging *{cursor:grabbing!important}
+.step{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 10px}.step b{flex:none;width:20px;height:20px;border-radius:50%;background:#ff4e7026;color:#ffd0da;display:grid;place-items:center;font-size:11px}
 </style>
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@700&family=Noto+Sans+Bengali:wght@700&family=Noto+Serif+Bengali:wght@700&family=Baloo+Da+2:wght@700&family=Anek+Bangla:wght@700&family=Galada&family=Atma:wght@700&family=Tiro+Bangla&family=Inter:wght@700&family=Poppins:wght@700&family=Montserrat:wght@700&family=Playfair+Display:wght@700&family=Bebas+Neue&family=Pacifico&family=Lobster&family=Oswald:wght@700&display=swap">
 </head>
 <body>
@@ -209,7 +214,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           <div class="section-title">Aa Text &amp; stickers <span class="muted">06</span></div>
           <div class="sub-label">Text</div>
           <div class="field"><label>Overlay text</label><input id="overlayText" type="text" maxlength="160" placeholder="English ba বাংলা likho…"></div>
-          <div class="field"><label>Color of each word</label><div class="wchips" id="wordColors"></div></div>
+          <div class="field"><label>Color of each word <span class="value">word tap → color</span></label><div class="wchips" id="wordColors"></div><div class="palette" id="palette"></div></div>
           <div class="two"><div class="field"><label>Default color</label><input id="textColor" type="color" value="#ffffff" style="width:100%;height:35px;border:1px solid #383842;border-radius:8px;background:#111116;padding:3px"></div><div class="field"><label>Position</label><select id="textPosition"><option value="top">Top</option><option value="center">Center</option><option value="bottom" selected>Bottom</option></select></div></div>
           <div class="field"><label>Font (English &amp; বাংলা)</label><select id="fontFamily"></select></div>
           <div class="field"><label>Text size <span class="value" id="textSizeVal">28</span></label><input type="range" id="textSize" min="12" max="120" value="28"><div class="qrow" id="sizePresets"><button class="ghost" data-v="18">S</button><button class="ghost" data-v="28">M</button><button class="ghost" data-v="40">L</button><button class="ghost" data-v="56">XL</button><button class="ghost" data-v="80">XXL</button></div></div>
@@ -218,17 +223,19 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           <input type="hidden" id="sticker" value=""><button class="ghost" id="stkUpload" style="width:100%">📁 Add sticker from device</button><input type="file" id="stkFile" accept="image/*" multiple class="hidden">
           <div class="stk-grid" id="stickerGallery"></div>
           <div class="two"><div class="field"><label>Size <span class="value" id="stickerSizeVal">52</span></label><input type="range" id="stickerSize" min="24" max="180" value="52"></div><div class="field"><label>Position</label><select id="stickerPos"><option value="tr">Top right</option><option value="tl">Top left</option><option value="c">Center</option><option value="br">Bottom right</option><option value="bl">Bottom left</option></select></div></div>
-          <div class="audio-note">Text, stickers ar subtitles export kora video te burn hoy. Font internet theke load hoy.</div>
+          <div class="audio-note">💡 Sticker ta video preview te <b>cursor/angul diye tene</b> jekhane khushi rakho. Text, stickers ar subtitles export kora video te burn hoy. Font internet theke load hoy.</div>
         </div>
         <div class="control-group" id="g-sub">
           <div class="section-title">💬 Subtitles <span class="muted">07</span></div>
+          <div class="step"><b>1</b><span>Subtitle likhar jonno <u>duita upay</u>: <i>(A)</i> nicher box e nijer lekha line gulo likhe <b>Auto-time</b> chapo, ba <i>(B)</i> <b>Auto-generate</b> chapo — video er kotha shune likhe dibe.</span></div>
           <div class="field"><label>Language</label><select id="subLang"><option value="bn-BD">বাংলা (Bangla)</option><option value="en-US" selected>English (US)</option><option value="en-GB">English (UK)</option><option value="hi-IN">हिन्दी (Hindi)</option></select></div>
-          <div class="sub-row"><button class="ghost" id="subGen">🎙 Auto-generate</button><button class="ghost" id="subStop" disabled>■ Stop</button><button class="ghost" id="subImport">📂 Import .srt</button><button class="ghost" id="subClear">🗑 Clear</button></div>
+          <div class="field"><label>Subtitle lines <span class="value">1 line = 1 subtitle</span></label><textarea id="subText" rows="6" placeholder="Prothom line…&#10;Ditio line…&#10;Tritio line…"></textarea></div>
+          <div class="sub-row"><button class="ghost" id="subAuto">⏱ Auto-time lines</button><button class="ghost" id="subAdd">➕ Add at current time</button><button class="ghost" id="subGen">🎙 Auto-generate</button><button class="ghost" id="subStop" disabled>■ Stop</button><button class="ghost" id="subImport">📂 Import .srt</button><button class="ghost" id="subClear">🗑 Clear</button></div>
           <input type="file" id="subFile" accept=".srt,.vtt,.txt" class="hidden">
-          <div class="field"><label>Subtitle lines <span class="value">start - end | text</span></label><textarea id="subText" rows="6" placeholder="00:02.0 - 00:04.5 | Hello everyone"></textarea></div>
+          <div class="hint" id="subInfo" style="margin-bottom:10px">Ekhono kono subtitle nai.</div>
           <div class="checkrow">Show subtitles in video <input class="switch" id="subOn" type="checkbox" checked></div>
           <div class="field"><label>Subtitle size <span class="value" id="subSizeVal">22</span></label><input type="range" id="subSize" min="12" max="60" value="22"></div>
-          <div class="audio-note">Auto-generate: Chrome/Edge lage. Video sound speaker diye bajbe, mic ta sheta shunbe, tai volume bariye shanto jaygay korun. Pore lines edit kora jabe.</div>
+          <div class="audio-note"><b>Auto-time:</b> line gulo clip er upor shoman bhage somoy boshiye dey. <b>Add at current time:</b> video je jaygay thamiye rekhecho shekhan theke 3 second er subtitle. <b>Auto-generate:</b> Chrome/Edge e, mic ar speaker lage — video er awaz mic shune (volume baro, shanto jaygay). Somoy ektu age-pichhe hole box er line e <code>00:02.0 - 00:04.5 | text</code> edit koro.</div>
         </div>
       </div>
       <div class="panel-foot"><button class="ghost" id="snapBtn">📸 Save frame</button><button class="ghost" id="resetEdits">↺ Reset all</button></div>
@@ -333,7 +340,14 @@ function baseFilter(){const e=effectCSS(),en=+$('enhance').value/100;return(adjA
 $('adjReset').onclick=()=>{[['brightness',100],['contrast',100],['saturation',100],['enhance',0],['sharpen',0],['shadows',0],['highlights',0]].forEach(([id,v])=>{$(id).value=v;$(id+'Val').textContent=id==='brightness'||id==='contrast'||id==='saturation'?v+'%':v});updatePreviewFilters()};
 /* text */
 let wc=[];const words=()=>$('overlayText').value.trim().split(/\s+/).filter(Boolean);
-function rebuildChips(){const w=words(),box=$('wordColors');box.innerHTML='';if(!w.length){box.innerHTML='<span class="hint">Upore text likhle, prottek shobder color alada kora jabe</span>';return}w.forEach((t,i)=>{const l=document.createElement('label'),c=document.createElement('input'),sp=document.createElement('span');l.className='wchip';c.type='color';c.value=wc[i]||$('textColor').value;c.oninput=()=>{wc[i]=c.value};sp.textContent=t;l.append(c,sp);box.append(l)})}
+let selW=-1;
+const PAL=['#ffffff','#000000','#ff3b5c','#ff9f1c','#ffe14d','#3ddc84','#27c4f5','#5b6cff','#b05bff','#ff6bd6'];
+function setWordColor(c){const n=words().length;if(selW<0)for(let i=0;i<n;i++)wc[i]=c;else wc[selW]=c;rebuildChips()}
+function buildPalette(){const pl=$('palette');pl.innerHTML='';PAL.forEach(c=>{const b=document.createElement('button');b.type='button';b.style.background=c;b.title=c;b.onclick=()=>setWordColor(c);pl.append(b)});const ci=document.createElement('input');ci.type='color';ci.title='Custom color';ci.value='#ffffff';['input','change'].forEach(ev=>ci.addEventListener(ev,()=>setWordColor(ci.value)));pl.append(ci)}
+function rebuildChips(){const w=words(),box=$('wordColors');box.innerHTML='';if(!w.length){box.innerHTML='<span class="hint">Upore text likho, tarpor shobd tap kore color bachho</span>';$('palette').style.display='none';return}$('palette').style.display='flex';if(selW>=w.length)selW=-1;
+ const all=document.createElement('button');all.type='button';all.className='wchip'+(selW<0?' sel':'');all.textContent='All';all.onclick=()=>{selW=-1;rebuildChips()};box.append(all);
+ w.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='wchip'+(selW===i?' sel':'');b.textContent=t;b.style.color=wc[i]||$('textColor').value;b.onclick=()=>{selW=i;rebuildChips()};box.append(b)})}
+buildPalette();
 $('overlayText').addEventListener('input',rebuildChips);$('textColor').addEventListener('input',()=>{wc=[];rebuildChips()});
 $('textSize').addEventListener('input',()=>{$('textSizeVal').textContent=$('textSize').value;markSize()});
 function markSize(){$('sizePresets').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===$('textSize').value))}
@@ -365,7 +379,7 @@ function drawText(ctx,W,H,items,fs,pos,style,anim,t,bottomY){
 function drawOverlays(ctx,W,H,tSrc,still,demo){
  const start=+$('trimStart').value,sp=+$('speed').value,t=still?99:demo?(performance.now()/1000)%4:Math.max(0,(tSrc-start)/sp);
  const stk=$('sticker').value;
- if(stk){const sz=+$('stickerSize').value*H/720,ps=$('stickerPos').value,sx=ps.includes('l')?.1:ps.includes('r')?.9:.5,sy=ps.includes('t')?.14:ps.includes('b')?.86:.5,k=still?1:Math.max(.01,easeBack(Math.min(1,t/.5)));ctx.save();ctx.translate(W*sx,H*sy);ctx.scale(k,k);ctx.font=`${sz}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';if(stk.startsWith('img:')){const im=customImgs[+stk.slice(4)];if(im&&im.complete&&im.naturalWidth){const r=Math.min(sz*1.6/im.naturalWidth,sz*1.6/im.naturalHeight);ctx.drawImage(im,-im.naturalWidth*r/2,-im.naturalHeight*r/2,im.naturalWidth*r,im.naturalHeight*r)}}else ctx.fillText(stk,0,0);ctx.restore()}
+ if(stk){const sz=+$('stickerSize').value*H/720,sx=stkX,sy=stkY,k=still?1:Math.max(.01,easeBack(Math.min(1,t/.5)));ctx.save();ctx.translate(W*sx,H*sy);ctx.scale(k,k);ctx.font=`${sz}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';if(stk.startsWith('img:')){const im=customImgs[+stk.slice(4)];if(im&&im.complete&&im.naturalWidth){const r=Math.min(sz*1.6/im.naturalWidth,sz*1.6/im.naturalHeight);ctx.drawImage(im,-im.naturalWidth*r/2,-im.naturalHeight*r/2,im.naturalWidth*r,im.naturalHeight*r)}}else ctx.fillText(stk,0,0);ctx.restore()}
  const subsOn=$('subOn').checked&&cues.length>0,w=words();
  if(w.length){ensureFont($('overlayText').value);drawText(ctx,W,H,w.map((x,i)=>({t:x,c:wc[i]||$('textColor').value})),+$('textSize').value*H/720,$('textPosition').value,$('textStyle').value,$('textAnim').value,t,subsOn?H*.76:H*.93)}
  if(subsOn){const c=cues.find(c=>tSrc>=c.s&&tSrc<c.e);if(c){ensureFont(c.t);drawText(ctx,W,H,c.t.split(/\s+/).map(x=>({t:x,c:'#fff'})),+$('subSize').value*H/720,'bottom','box','none',99,H*.92)}}}
@@ -374,12 +388,24 @@ function ovLoop(){const fr=$('previewFrame'),d=devicePixelRatio||1,w=Math.round(
 const customImgs=[];
 $('stkUpload').onclick=()=>$('stkFile').click();
 $('stkFile').addEventListener('change',e=>{[...e.target.files].forEach(f=>{if(!f.type.startsWith('image/'))return;const url=URL.createObjectURL(f),im=new Image(),idx=customImgs.length;im.src=url;customImgs.push(im);const b=document.createElement('button');b.className='ghost';b.dataset.s='img:'+idx;b.title=f.name;b.innerHTML=`<img src="${url}" alt="">`;b.onclick=()=>{$('sticker').value=$('sticker').value===b.dataset.s?'':b.dataset.s;markStk()};gal.append(b);$('sticker').value='img:'+idx});markStk();e.target.value=''});
+let stkX=.9,stkY=.14;
+const PRE={tr:[.9,.14],tl:[.1,.14],c:[.5,.5],br:[.9,.86],bl:[.1,.86]};
+$('stickerPos').addEventListener('input',()=>{[stkX,stkY]=PRE[$('stickerPos').value]});
+(()=>{const fr=$('previewFrame');let drag=null;
+ const rel=e=>{const r=fr.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height,w:r.width,h:r.height}};
+ const hit=e=>{if(!$('sticker').value||!file)return false;const q=rel(e),rad=Math.max(34,+$('stickerSize').value*q.h/720*.85);return Math.hypot((q.x-stkX)*q.w,(q.y-stkY)*q.h)<rad};
+ fr.addEventListener('pointerdown',e=>{if(hit(e)){drag=true;fr.setPointerCapture(e.pointerId);fr.classList.add('dragging');e.preventDefault()}});
+ fr.addEventListener('pointermove',e=>{if(drag){const q=rel(e);stkX=Math.max(.02,Math.min(.98,q.x));stkY=Math.max(.02,Math.min(.98,q.y))}else fr.style.cursor=hit(e)?'grab':''});
+ const end=()=>{drag=null;fr.classList.remove('dragging')};fr.addEventListener('pointerup',end);fr.addEventListener('pointercancel',end);
+ fr.style.touchAction='manipulation'; new MutationObserver(()=>{}); 
+ const upd=()=>{fr.style.touchAction=$('sticker').value?'none':''};setInterval(upd,500)})();
 /* subtitles */
 let cues=[],sr=null,srOn=false,segStart=0;
 const fmtT=t=>{const m=Math.floor(t/60),s=t-m*60;return String(m).padStart(2,'0')+':'+s.toFixed(1).padStart(4,'0')};
 function parseCues(){cues=[];$('subText').value.split('\n').forEach(l=>{const m=l.match(/^\s*(\d+):(\d+(?:\.\d+)?)\s*(?:-+>?|–|→)\s*(\d+):(\d+(?:\.\d+)?)\s*\|?\s*(.+?)\s*$/);if(m)cues.push({s:+m[1]*60+ +m[2],e:+m[3]*60+ +m[4],t:m[5]})})}
-$('subText').addEventListener('input',parseCues);
-function addCue(a,b,t){$('subText').value+=($('subText').value&&!$('subText').value.endsWith('\n')?'\n':'')+fmtT(a)+' - '+fmtT(b)+' | '+t;parseCues();$('subText').scrollTop=1e9}
+$('subText').addEventListener('input',()=>{parseCues();subInfo()});
+function subInfo(){const n=cues.length;$('subInfo').textContent=n?`${n} ta subtitle ready ✓ — video play korle preview te dekha jabe.`:'Ekhono kono subtitle nai.'}
+function addCue(a,b,t){$('subText').value+=($('subText').value&&!$('subText').value.endsWith('\n')?'\n':'')+fmtT(a)+' - '+fmtT(b)+' | '+t;parseCues();subInfo();$('subText').scrollTop=1e9}
 function stopSub(){srOn=false;try{sr&&sr.stop()}catch{}$('subGen').disabled=false;$('subStop').disabled=true;video.pause()}
 $('subGen').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Auto subtitle er jonno Chrome ba Edge browser lagbe.');return}if(!file||busy)return;
  video.pause();video.currentTime=+$('trimStart').value;video.muted=false;video.volume=1;segStart=video.currentTime;srOn=true;$('subGen').disabled=true;$('subStop').disabled=false;
@@ -388,8 +414,11 @@ $('subGen').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechR
  sr.onend=()=>{if(srOn&&!video.paused&&!video.ended){try{sr.start()}catch{}}else if(srOn)stopSub()};
  sr.onerror=ev=>{if(ev.error!=='no-speech'){status('Auto subtitle: '+ev.error+(ev.error==='not-allowed'?' (mic permission din)':''),'bad')}};
  try{sr.start();video.play();status('Subtitle toiri hochhe… video shesh howa porjonto apekkha korun.')}catch(e){stopSub()}};
-$('subStop').onclick=stopSub;video.addEventListener('pause',()=>{if(srOn)stopSub()});
-$('subClear').onclick=()=>{$('subText').value='';parseCues()};
+$('subStop').onclick=stopSub;
+$('subAuto').onclick=()=>{if(!file){alert('Age video load koro.');return}const lines=$('subText').value.split('\n').map(l=>l.replace(/^\s*\d+:\d+(?:\.\d+)?\s*(?:-+>?|–|→)\s*\d+:\d+(?:\.\d+)?\s*\|?\s*/,'').trim()).filter(Boolean);if(!lines.length){alert('Age nicher box e subtitle line gulo likho (1 line = 1 subtitle).');return}
+ const a=+$('trimStart').value,b=+$('trimEnd').value,W=lines.map(l=>Math.max(6,l.length)),T=W.reduce((x,y)=>x+y,0);let t=a;$('subText').value=lines.map((l,i)=>{const d=(b-a)*W[i]/T,r=fmtT(t)+' - '+fmtT(t+d)+' | '+l;t+=d;return r}).join('\n');parseCues();subInfo()};
+$('subAdd').onclick=()=>{if(!file)return;const tx=prompt('Ei somoy e ki subtitle dekhabe?');if(!tx)return;const a=video.currentTime;addCue(a,Math.min(+$('trimEnd').value,a+Math.max(2,tx.length*.09)),tx);subInfo()};video.addEventListener('pause',()=>{if(srOn)stopSub()});
+$('subClear').onclick=()=>{$('subText').value='';parseCues();subInfo()};
 $('subImport').onclick=()=>$('subFile').click();
 $('subFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;const tx=await f.text(),out=[],re=/(?:(\d+):)?(\d+):(\d+)[,.](\d+)\s*-->\s*(?:(\d+):)?(\d+):(\d+)[,.](\d+)[^\n]*\n([\s\S]*?)(?=\n\s*\n|$)/g,T=(h,m,s,ms)=>(+h||0)*3600+ +m*60+ +s+parseFloat('0.'+ms);let m;while(m=re.exec(tx.replace(/\r/g,'')))out.push(fmtT(T(m[1],m[2],m[3],m[4]))+' - '+fmtT(T(m[5],m[6],m[7],m[8]))+' | '+m[9].replace(/<[^>]+>/g,'').replace(/\n/g,' ').trim());if(out.length){$('subText').value=out.join('\n');parseCues()}else if(/\d+:\d+/.test(tx)){$('subText').value=tx;parseCues()}else alert('Subtitle lines pawa jayni.');e.target.value=''});
 /* preview audio: music + voice */
@@ -401,7 +430,7 @@ function syncPrev(){for(const k of['music','voice']){const a=pa[k];if(!a)continu
 $('music').addEventListener('change',()=>setPrev('music'));$('voice').addEventListener('change',()=>setPrev('voice'));
 $('musicVol').addEventListener('input',applyPv);$('voiceVol').addEventListener('input',()=>{$('voiceVolVal').textContent=$('voiceVol').value+'%';applyPv()});
 /* reset */
-function resetNew(){['enhance','sharpen','shadows','highlights'].forEach(id=>{$(id).value=0;$(id+'Val').textContent='0'});$('fontFamily').selectedIndex=0;$('textAnim').value='none';$('textStyle').value='outline';$('textSizeVal').textContent='28';$('stickerSize').value=52;$('stickerSizeVal').textContent='52';$('stickerPos').value='tr';$('sticker').value='';$('voice').value='';$('voiceVol').value=100;$('voiceVolVal').textContent='100%';wc=[];rebuildChips();markSize();markStk();setPrev('music');setPrev('voice')}
+function resetNew(){stkX=.9;stkY=.14;selW=-1;['enhance','sharpen','shadows','highlights'].forEach(id=>{$(id).value=0;$(id+'Val').textContent='0'});$('fontFamily').selectedIndex=0;$('textAnim').value='none';$('textStyle').value='outline';$('textSizeVal').textContent='28';$('stickerSize').value=52;$('stickerSizeVal').textContent='52';$('stickerPos').value='tr';$('sticker').value='';$('voice').value='';$('voiceVol').value=100;$('voiceVolVal').textContent='100%';wc=[];rebuildChips();markSize();markStk();setPrev('music');setPrev('voice')}
 document.querySelectorAll('#toolBody .section-title .muted').forEach((e,i)=>e.textContent=String(i+1).padStart(2,'0'));
 rebuildChips();markSize();
 setLoaded(false);updatePreviewFilters();
