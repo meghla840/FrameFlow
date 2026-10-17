@@ -223,7 +223,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           <input type="hidden" id="sticker" value=""><button class="ghost" id="stkUpload" style="width:100%">📁 Add sticker from device</button><input type="file" id="stkFile" accept="image/*" multiple class="hidden">
           <div class="stk-grid" id="stickerGallery"></div>
           <div class="two"><div class="field"><label>Size <span class="value" id="stickerSizeVal">52</span></label><input type="range" id="stickerSize" min="24" max="180" value="52"></div><div class="field"><label>Position</label><select id="stickerPos"><option value="tr">Top right</option><option value="tl">Top left</option><option value="c">Center</option><option value="br">Bottom right</option><option value="bl">Bottom left</option></select></div></div>
-          <div class="audio-note">💡 Sticker ta video preview te <b>cursor/angul diye tene</b> jekhane khushi rakho. Text, stickers ar subtitles export kora video te burn hoy. Font internet theke load hoy.</div>
+          <div class="audio-note">💡 Sticker ar text duitai video preview te <b>cursor/angul diye tene</b> jekhane khushi rakho (Position dropdown e chaple abar preset e fire ashe). Text, stickers ar subtitles export kora video te burn hoy. Font internet theke load hoy.</div>
         </div>
         <div class="control-group" id="g-sub">
           <div class="section-title">💬 Subtitles <span class="muted">07</span></div>
@@ -361,15 +361,16 @@ gal.querySelectorAll('button').forEach(b=>b.onclick=()=>{$('sticker').value=($('
 const ease=p=>1-Math.pow(1-p,3),easeBack=p=>{const c=1.70158;return 1+(c+1)*Math.pow(p-1,3)+c*Math.pow(p-1,2)};
 const rr=(c,x,y,w,h,r)=>{c.beginPath();c.roundRect?c.roundRect(x,y,w,h,r):c.rect(x,y,w,h)};
 function wrapLines(ctx,items,maxW){const sp=ctx.measureText(' ').width,L=[];let cur={it:[],w:0};for(const o of items){o.w=ctx.measureText(o.t).width;if(cur.it.length&&cur.w+sp+o.w>maxW){L.push(cur);cur={it:[],w:0}}o.x=cur.it.length?cur.w+sp:0;cur.w=o.x+o.w;cur.it.push(o)}if(cur.it.length)L.push(cur);return L}
-function drawText(ctx,W,H,items,fs,pos,style,anim,t,bottomY){
- ctx.font=fontStr(fs);const lh=fs*1.3,L=wrapLines(ctx,items,W*.88),bh=L.length*lh,y0=pos==='top'?H*.07:pos==='center'?(H-bh)/2:bottomY-bh,cx=W/2,cy0=y0+bh/2,p=Math.min(1,t/.8);
+function drawText(ctx,W,H,items,fs,pos,style,anim,t,bottomY,cu,main){
+ ctx.font=fontStr(fs);const lh=fs*1.3,L=wrapLines(ctx,items,W*.88),bh=L.length*lh,y0=cu?cu.y*H-bh/2:pos==='top'?H*.07:pos==='center'?(H-bh)/2:bottomY-bh,cx=cu?cu.x*W:W/2,cy0=y0+bh/2,p=Math.min(1,t/.8);
+ if(main){const mw=Math.max(...L.map(l=>l.w));lastTB={l:(cx-mw/2)/W,r:(cx+mw/2)/W,t:y0/H,b:(y0+bh)/H}}
  const total=items.reduce((a,o)=>a+[...o.t].length,0);let al=1,oy=0,sc=1,reveal=1e9,revW=1e9;
  if(anim==='fade')al=p;else if(anim==='slide'){al=p;oy=(1-ease(p))*fs*1.5}else if(anim==='zoom'){al=Math.min(1,p*2);sc=.4+.6*easeBack(p)}
  else if(anim==='type')reveal=Math.floor(Math.min(1,t/Math.min(3,Math.max(1,total*.09)))*total);else if(anim==='words')revW=Math.floor(t/.4)+1;
  else if(anim==='bounce')oy=-Math.abs(Math.sin(t*5))*fs*.3;else if(anim==='pulse')sc=1+.06*Math.sin(t*6);
  ctx.save();ctx.globalAlpha*=al;ctx.translate(cx,cy0+oy);ctx.scale(sc,sc);ctx.translate(-cx,-cy0);ctx.textBaseline='middle';ctx.textAlign='left';ctx.lineJoin='round';
  let seen=0,wi=0;
- L.forEach((ln,li)=>{const cy=y0+li*lh+lh/2,x0=(W-ln.w)/2;
+ L.forEach((ln,li)=>{const cy=y0+li*lh+lh/2,x0=cx-ln.w/2;
   if(style==='box'){ctx.fillStyle='rgba(0,0,0,.62)';rr(ctx,x0-fs*.35,cy-lh/2+fs*.08,ln.w+fs*.7,lh-fs*.16,fs*.25);ctx.fill()}
   ln.it.forEach(o=>{const g=[...o.t],n=g.length;let txt=o.t;const hide=wi>=revW||seen>=reveal;if(!hide&&seen+n>reveal)txt=g.slice(0,reveal-seen).join('');seen+=n;wi++;if(hide)return;
    const x=x0+o.x;if(style==='outline'){ctx.lineWidth=fs/6;ctx.strokeStyle='#000';ctx.strokeText(txt,x,cy)}
@@ -381,24 +382,26 @@ function drawOverlays(ctx,W,H,tSrc,still,demo){
  const stk=$('sticker').value;
  if(stk){const sz=+$('stickerSize').value*H/720,sx=stkX,sy=stkY,k=still?1:Math.max(.01,easeBack(Math.min(1,t/.5)));ctx.save();ctx.translate(W*sx,H*sy);ctx.scale(k,k);ctx.font=`${sz}px "Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';if(stk.startsWith('img:')){const im=customImgs[+stk.slice(4)];if(im&&im.complete&&im.naturalWidth){const r=Math.min(sz*1.6/im.naturalWidth,sz*1.6/im.naturalHeight);ctx.drawImage(im,-im.naturalWidth*r/2,-im.naturalHeight*r/2,im.naturalWidth*r,im.naturalHeight*r)}}else ctx.fillText(stk,0,0);ctx.restore()}
  const subsOn=$('subOn').checked&&cues.length>0,w=words();
- if(w.length){ensureFont($('overlayText').value);drawText(ctx,W,H,w.map((x,i)=>({t:x,c:wc[i]||$('textColor').value})),+$('textSize').value*H/720,$('textPosition').value,$('textStyle').value,$('textAnim').value,t,subsOn?H*.76:H*.93)}
+ if(w.length){ensureFont($('overlayText').value);drawText(ctx,W,H,w.map((x,i)=>({t:x,c:wc[i]||$('textColor').value})),+$('textSize').value*H/720,$('textPosition').value,$('textStyle').value,$('textAnim').value,t,subsOn?H*.76:H*.93,txtCustom,true)}
  if(subsOn){const c=cues.find(c=>tSrc>=c.s&&tSrc<c.e);if(c){ensureFont(c.t);drawText(ctx,W,H,c.t.split(/\s+/).map(x=>({t:x,c:'#fff'})),+$('subSize').value*H/720,'bottom','box','none',99,H*.92)}}}
 const ov=$('ovCanvas'),octx=ov.getContext('2d');
 function ovLoop(){const fr=$('previewFrame'),d=devicePixelRatio||1,w=Math.round(fr.clientWidth*d),h=Math.round(fr.clientHeight*d);if(ov.width!==w||ov.height!==h){ov.width=w;ov.height=h}octx.clearRect(0,0,w,h);if(file&&w&&h&&!busy)drawOverlays(octx,w,h,video.currentTime,false,video.paused);requestAnimationFrame(ovLoop)}ovLoop();
 const customImgs=[];
 $('stkUpload').onclick=()=>$('stkFile').click();
 $('stkFile').addEventListener('change',e=>{[...e.target.files].forEach(f=>{if(!f.type.startsWith('image/'))return;const url=URL.createObjectURL(f),im=new Image(),idx=customImgs.length;im.src=url;customImgs.push(im);const b=document.createElement('button');b.className='ghost';b.dataset.s='img:'+idx;b.title=f.name;b.innerHTML=`<img src="${url}" alt="">`;b.onclick=()=>{$('sticker').value=$('sticker').value===b.dataset.s?'':b.dataset.s;markStk()};gal.append(b);$('sticker').value='img:'+idx});markStk();e.target.value=''});
-let stkX=.9,stkY=.14;
+let stkX=.9,stkY=.14,txtCustom=null,lastTB=null;
 const PRE={tr:[.9,.14],tl:[.1,.14],c:[.5,.5],br:[.9,.86],bl:[.1,.86]};
+$('textPosition').addEventListener('input',()=>{txtCustom=null});
 $('stickerPos').addEventListener('input',()=>{[stkX,stkY]=PRE[$('stickerPos').value]});
-(()=>{const fr=$('previewFrame');let drag=null;
+(()=>{const fr=$('previewFrame');let drag=null,off={x:0,y:0};
  const rel=e=>{const r=fr.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height,w:r.width,h:r.height}};
- const hit=e=>{if(!$('sticker').value||!file)return false;const q=rel(e),rad=Math.max(34,+$('stickerSize').value*q.h/720*.85);return Math.hypot((q.x-stkX)*q.w,(q.y-stkY)*q.h)<rad};
- fr.addEventListener('pointerdown',e=>{if(hit(e)){drag=true;fr.setPointerCapture(e.pointerId);fr.classList.add('dragging');e.preventDefault()}});
- fr.addEventListener('pointermove',e=>{if(drag){const q=rel(e);stkX=Math.max(.02,Math.min(.98,q.x));stkY=Math.max(.02,Math.min(.98,q.y))}else fr.style.cursor=hit(e)?'grab':''});
+ const hitS=q=>{if(!$('sticker').value)return false;const rad=Math.max(34,+$('stickerSize').value*q.h/720*.85);return Math.hypot((q.x-stkX)*q.w,(q.y-stkY)*q.h)<rad};
+ const hitT=q=>{const b=lastTB;if(!b||!words().length)return false;const px=14/q.w,py=14/q.h;return q.x>b.l-px&&q.x<b.r+px&&q.y>b.t-py&&q.y<b.b+py};
+ const what=e=>{if(!file||busy)return null;const q=rel(e);return hitS(q)?'s':hitT(q)?'t':null};
+ fr.addEventListener('pointerdown',e=>{const w=what(e);if(!w)return;const q=rel(e);drag=w;if(w==='t'){const b=lastTB;off={x:q.x-(b.l+b.r)/2,y:q.y-(b.t+b.b)/2}}fr.setPointerCapture(e.pointerId);fr.classList.add('dragging');e.preventDefault()});
+ fr.addEventListener('pointermove',e=>{if(!drag){fr.style.cursor=what(e)?'grab':'';return}const q=rel(e),c=v=>Math.max(.02,Math.min(.98,v));if(drag==='s'){stkX=c(q.x);stkY=c(q.y)}else txtCustom={x:c(q.x-off.x),y:c(q.y-off.y)}});
  const end=()=>{drag=null;fr.classList.remove('dragging')};fr.addEventListener('pointerup',end);fr.addEventListener('pointercancel',end);
- fr.style.touchAction='manipulation'; new MutationObserver(()=>{}); 
- const upd=()=>{fr.style.touchAction=$('sticker').value?'none':''};setInterval(upd,500)})();
+ fr.addEventListener('touchstart',e=>{if(what(e.touches[0]))e.preventDefault()},{passive:false})})();
 /* subtitles */
 let cues=[],sr=null,srOn=false,segStart=0;
 const fmtT=t=>{const m=Math.floor(t/60),s=t-m*60;return String(m).padStart(2,'0')+':'+s.toFixed(1).padStart(4,'0')};
@@ -430,7 +433,7 @@ function syncPrev(){for(const k of['music','voice']){const a=pa[k];if(!a)continu
 $('music').addEventListener('change',()=>setPrev('music'));$('voice').addEventListener('change',()=>setPrev('voice'));
 $('musicVol').addEventListener('input',applyPv);$('voiceVol').addEventListener('input',()=>{$('voiceVolVal').textContent=$('voiceVol').value+'%';applyPv()});
 /* reset */
-function resetNew(){stkX=.9;stkY=.14;selW=-1;['enhance','sharpen','shadows','highlights'].forEach(id=>{$(id).value=0;$(id+'Val').textContent='0'});$('fontFamily').selectedIndex=0;$('textAnim').value='none';$('textStyle').value='outline';$('textSizeVal').textContent='28';$('stickerSize').value=52;$('stickerSizeVal').textContent='52';$('stickerPos').value='tr';$('sticker').value='';$('voice').value='';$('voiceVol').value=100;$('voiceVolVal').textContent='100%';wc=[];rebuildChips();markSize();markStk();setPrev('music');setPrev('voice')}
+function resetNew(){txtCustom=null;stkX=.9;stkY=.14;selW=-1;['enhance','sharpen','shadows','highlights'].forEach(id=>{$(id).value=0;$(id+'Val').textContent='0'});$('fontFamily').selectedIndex=0;$('textAnim').value='none';$('textStyle').value='outline';$('textSizeVal').textContent='28';$('stickerSize').value=52;$('stickerSizeVal').textContent='52';$('stickerPos').value='tr';$('sticker').value='';$('voice').value='';$('voiceVol').value=100;$('voiceVolVal').textContent='100%';wc=[];rebuildChips();markSize();markStk();setPrev('music');setPrev('voice')}
 document.querySelectorAll('#toolBody .section-title .muted').forEach((e,i)=>e.textContent=String(i+1).padStart(2,'0'));
 rebuildChips();markSize();
 setLoaded(false);updatePreviewFilters();
